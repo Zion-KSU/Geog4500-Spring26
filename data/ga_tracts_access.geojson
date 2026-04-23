@@ -87,3 +87,38 @@ m = leafmap.Map(center=[40.72,-73.99], zoom=13)
 url = "https://github.com/opengeos/datasets/releases/download/places/nyc_buildings.geojson"
 m.add_vector(url, layer_name="NYC Buildings")
 m
+url = "https://github.com/opengeos/datasets/releases/download/places/las_vegas_buildings.geojson"
+gdf = gpd.read_file(url)
+gdf.head()
+gdf.explore()
+m = leafmap.Map()
+m.add_basemap("Esri.WorldImagery")
+style = {"color":"red", "fillColor":"red", "fillOpacity":0.1, "weight":2}
+m.add_gdf(gdf, style=style, layer_name="Las Vegas Buildings", zoom_to_layer=True)
+m
+m = leafmap.Map()
+data = "https://raw.githubusercontent.com/opengeos/leafmap/master/docs/data/countries.geojson"
+m.add_data(
+    data, column="POP_EST", scheme="Quantiles", cmap="Blues", legend_title="Population"
+)
+m
+m = leafmap.Map()
+m.add_data(
+    data, column="POP_EST", scheme="EqualInterval", cmap="Blues", legend_title="Population"
+)
+m
+import leafmap as leafmap_raster
+dem_url = "https://github.com/opengeos/datasets/releases/download/raster/dem_90m.tif"
+filename = "dem_90m.tif"
+leafmap.download_file(dem_url, filename, quiet=True)
+m = leafmap_raster.Map()
+m.add_raster(filename, colormap="terrain", layer_name="DEM")
+m
+leafmap.image_min_max(filename)
+landsat_url = "https://github.com/opengeos/datasets/releases/download/raster/cog.tif"
+filename = "cog.tif"
+leafmap.download_file(landsat_url, filename, quiet=True, overwrite=True)
+m = leafmap_raster.Map()
+m.add_raster(filename, indexes=[4, 3, 2], layer_name="RGB")
+
+m

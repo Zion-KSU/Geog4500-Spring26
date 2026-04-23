@@ -1,2 +1,89 @@
 m = leafmap.Map()
 m
+# Center the map on the continental United States
+m = leafmap.Map(center=(40, -100), zoom=4, height="600px")
+# Create a minimap map with most controls disabled
+m = leafmap.Map(
+    center=(40, -100),
+    zoom=4,
+    zoom_control=False,         # Remove zoom buttons
+    draw_control=False,         # Remove drawing tools
+    scale_control=False,        # Remove scale indicator
+    fullscreen_control=False,   # Remove fullscreen button
+    attribution_control=False,  # Remove attribution text
+    toolbar_control=False       # Remove Leafmap toolbar
+)
+# Create a new map for demonstration
+m = leafmap.Map(center=(40, -100), zoom=4, draw_control=False, height="500px")
+
+# Add search control using OpenStreetMap's Nominatim service
+url = "https://nominatim.openstreetmap.org/search?format=json&q={s}"
+m.add_search_control(url, zoom=10, position="topleft")
+m
+m = leafmap.Map()
+m.add_basemap("OpenTopoMap")
+m
+m = leafmap.Map(center=[40, -100], zoom=4)
+m.add_basemap("Esri.WorldImagery")
+url = "https://www.mrlc.gov/geoserver/mrlc_display/NLCD_2021_Land_Cover_L48/wms?"
+m.add_wms_layer(
+    url=url,
+    layers="NLCD_2021_Land_Cover_L48",
+    name="NLCD 2021",
+    attribution="MRLC",
+    format="image/png",
+    shown=True
+)
+m.add_legend(title="NLCD Land Cover Type", builtin_legend="NLCD")
+m
+m = leafmap.Map()
+m.add_basemap("OpenTopoMap")
+m.add_colormap(
+    cmap="terrain",
+    label="Elevation (meters)",
+    orientation="horizontal",
+    vmin=0,
+    vmax=4000
+)
+m
+import leafmap.colormaps as cm
+try:
+    cm.plot_colormaps(width=8, height=0.3)
+except Exception as e:
+    print(f"Note: colormap gallery display may not work in all environments.")
+    print(f"You can browse colormaps at: https://matplotlib.org/stable/users/explain/colors/colormaps.html")
+m = leafmap.Map()
+location = [40, -100]
+m.add_marker(location, draggable=True)
+m
+m = leafmap.Map()
+locations = [
+    [40, -100],  # Central US
+    [45, -110],  # Northwestern US
+    [50, -120],  # Southwestern Canada
+]
+
+for lat, lon in locations:
+    m.add_marker(location=[lat, lon])
+
+m
+import pandas as pd
+from folium.plugins import MarkerCluster
+
+m = leafmap.Map()
+
+# Read CSV and create markers manually
+url = "https://github.com/opengeos/datasets/releases/download/world/world_cities.csv"
+df = pd.read_csv(url)
+
+# Create a marker cluster
+marker_cluster = MarkerCluster().add_to(m)
+
+for _, row in df.iterrows():
+    folium.Marker([row['latitude'], row['longitude']]).add_to(marker_cluster)
+
+m
+m = leafmap.Map(center=[40.72,-73.99], zoom=13)
+url = "https://github.com/opengeos/datasets/releases/download/places/nyc_buildings.geojson"
+m.add_vector(url, layer_name="NYC Buildings")
+m

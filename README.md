@@ -1,2 +1,14 @@
-# Geog4500-Spring26
-Geospatial Programming- Spring 2026
+# GEOG 4500 - Python Programming for GIS
+
+**Student**: Zion Atkins  
+**Semester**: Spring 2026  
+**University**: Kennesaw State University
+
+## Repository Structure
+
+- `lectures/` — In-class notebooks and examples
+- `homework/` — Completed homework assignments
+- `data/` — Datasets used in assignments
+```
+
+
